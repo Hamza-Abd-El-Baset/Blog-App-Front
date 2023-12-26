@@ -13,7 +13,11 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "50px"
+    height: "50px",
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    width: "100%"
 }
  
 export default Footer;
