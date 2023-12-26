@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./create-post.css"
+import { toast, ToastContainer } from "react-toastify";
 
 const CreatePost = () => {
 
@@ -12,15 +13,28 @@ const CreatePost = () => {
 
     const formSubmitHandler = (e) => {
         e.preventDefault()
-        if(postData.title.trim() === "") return console.log("Post title is required")
-        if(postData.category.trim() === "") return console.log("Post category is required")
-        if(postData.description.trim() === "") return console.log("Post description is required")
-        if(!postData.file) return console.log("Post image is required")
-        console.log(postData)
+        const {title, category, description, file } = postData
+        if(title.trim() === "") return toast.error("Post title is required")
+        if(category.trim() === "") return toast.error("Post category is required")
+        if(description.trim() === "") return toast.error("Post description is required")
+        if(!file) return toast.error("Post image is required")
+
+        const formData = new FormData()
+
+        formData.append("image", file )
+        formData.append("title", title )
+        formData.append("category", category )
+        formData.append("description", description )
+        /**
+         * @todo send data to backend
+         */
+        console.log(formData)
+        
     }
 
     return ( 
         <section className="create-post">
+            <ToastContainer theme="colored" position="top-center"/>
             <h1 className="create-post-title">
                 Create New Post
             </h1>
