@@ -7,10 +7,13 @@ import PostsPage from "./pages/posts-page/PostsPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreatePost from "./pages/create-post/CreatePost";
 import Footer from "./components/footer/Footer";
+import PostDetails from "./pages/post-details/PostDetails";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer theme="colored" position="top-center"/>
       <Header />
       <Routes>
         <Route path="/" element={<Home />}/>
@@ -19,6 +22,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />}/>
         <Route path="/posts" element={<PostsPage />}/>
         <Route path="/posts/create" element={<CreatePost />}/>
+        <Route path="/posts/details/:id" element={<PostDetails />}/>
       </Routes>
       <Footer/>
     </BrowserRouter>
