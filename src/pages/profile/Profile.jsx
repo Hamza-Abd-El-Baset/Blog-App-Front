@@ -1,5 +1,6 @@
-import PostList from "../../posts/PostList";
-import {posts} from "../../../dummyData"
+import PostList from "../../components/posts/PostList";
+import {posts} from "../../dummyData"
+import UpdateProfileModel from "./UpdateProfileModel";
 import "./profile.css"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +9,7 @@ import swal from "sweetalert";
 const Profile = () => {
 
     const [file, setFile] = useState(null)
+    const [openUpdateProfileModel, setOpenUpdateProfileModel] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -74,7 +76,7 @@ const Profile = () => {
                     <strong>Date Joined: </strong>
                     <span>Fri Nov 04 2023 </span>
                 </div>
-                <button className="profile-update-btn">
+                <button onClick={() => setOpenUpdateProfileModel(true)} className="profile-update-btn">
                     <i className="bi bi-file-person-fill"></i>
                     Update Profile
                 </button>
@@ -86,6 +88,7 @@ const Profile = () => {
             <button onClick={deleteAccountHandler} className="delete-account-btn">
                 Delete Your Account
             </button>
+            {openUpdateProfileModel && <UpdateProfileModel setOpenUpdateProfileModel={setOpenUpdateProfileModel}/>}
         </section>
     );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./update-post.css"
 import { toast } from "react-toastify";
 
-const UpdatePostModal = ({setUpdatePost, post}) => {
+const UpdatePostModel = ({setOpenUpdatePostModel, post}) => {
     
     const [title, setTitle] = useState(post.title)
     const [description, setDescription] = useState(post.description)
@@ -22,7 +22,7 @@ const UpdatePostModal = ({setUpdatePost, post}) => {
         <div className="update-post">
             <form onSubmit={formSubmitHandler} className="update-post-form">
                 <abbr title="close">
-                    <i onClick={() => setUpdatePost(false)} className="bi bi-x-circle-fill update-post-form-close"></i>
+                    <i onClick={() => setOpenUpdatePostModel(false)} className="bi bi-x-circle-fill update-post-form-close"></i>
                 </abbr>
                 <h1 className="update-post-title">Update Post</h1>
                 <input
@@ -53,4 +53,4 @@ const UpdatePostModal = ({setUpdatePost, post}) => {
     );
 }
  
-export default UpdatePostModal;
+export default UpdatePostModel;

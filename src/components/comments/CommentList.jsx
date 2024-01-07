@@ -1,13 +1,13 @@
 import swal from "sweetalert";
 import "./comment-list.css"
-import UpdateCommentModal from "./UpdateCommentModal";
+import UpdateCommentModel from "./UpdateCommentModel";
 import { useState } from "react";
 
 
 
 const CommentList = () => {
     
-    const [updateComment, setUpdateComment] = useState(false)
+    const [openUpdateCommentModel, setOpenUpdateCommentModel] = useState(false)
 
     const deleteCommentHandler = () => {
         swal({
@@ -45,13 +45,13 @@ const CommentList = () => {
                         hello this is amazing
                     </p>
                     <div className="comment-item-icon-wrapper">
-                        <i className="bi bi-pencil-square" onClick={() => setUpdateComment(true)}></i>
+                        <i className="bi bi-pencil-square" onClick={() => setOpenUpdateCommentModel(true)}></i>
                         <i className="bi bi-trash-fill" onClick={deleteCommentHandler}></i>
                     </div>
                </div> 
                 )
             )}
-            {updateComment && <UpdateCommentModal setUpdateComment={setUpdateComment} comment={{_id:1, text: "Hello! This is amazing"}}/>}
+            {openUpdateCommentModel && <UpdateCommentModel setOpenUpdateCommentModel={setOpenUpdateCommentModel} comment={{_id:1, text: "Hello! This is amazing"}}/>}
         </div>
     );
 }

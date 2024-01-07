@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./update-comment.css"
 import { toast } from "react-toastify";
 
-const UpdateCommentModal = ({setUpdateComment, comment}) => {
+const UpdateCommentModel = ({setOpenUpdateCommentModel, comment}) => {
     
     const [text, setText] = useState(comment.text)
 
@@ -18,7 +18,7 @@ const UpdateCommentModal = ({setUpdateComment, comment}) => {
         <div className="update-comment">
             <form onSubmit={formSubmitHandler} className="update-comment-form">
                 <abbr title="close">
-                    <i onClick={() => setUpdateComment(false)} className="bi bi-x-circle-fill update-comment-form-close"></i>
+                    <i onClick={() => setOpenUpdateCommentModel(false)} className="bi bi-x-circle-fill update-comment-form-close"></i>
                 </abbr>
                 <h1 className="update-comment-title">Edit Comment</h1>
                 <input
@@ -35,4 +35,4 @@ const UpdateCommentModal = ({setUpdateComment, comment}) => {
     );
 }
  
-export default UpdateCommentModal;
+export default UpdateCommentModel;

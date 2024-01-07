@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 import AddComment from "../../components/comments/AddComment"
 import CommentList from "../../components/comments/CommentList";
 import swal from "sweetalert";
-import UpdatePostModal from "./UpdatePostModal";
+import UpdatePostModel from "./UpdatePostModel";
 
 const PostDetails = () => {
     const {id} = useParams()
     const post = posts.find(p => p._id === +id)
     
     const [file, setFile] = useState(null)
-    const [updatePost, setUpdatePost] = useState(false)
+    const [openUpdatePostModel, setOpenUpdatePostModel] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -85,13 +85,13 @@ const PostDetails = () => {
                     <small>{post.likes.length}</small>
                 </div>
                 <div>
-                    <i className="bi bi-pencil-square" onClick={() => setUpdatePost(true)}></i>
+                    <i className="bi bi-pencil-square" onClick={() => setOpenUpdatePostModel(true)}></i>
                     <i className="bi bi-trash-fill" onClick={deletePostHandler}></i>
                 </div>
             </div>
             <AddComment/>
             <CommentList/>
-            {updatePost && <UpdatePostModal setUpdatePost={setUpdatePost} post={post}/>}
+            {openUpdatePostModel && <UpdatePostModel setOpenUpdatePostModel={setOpenUpdatePostModel} post={post}/>}
             
         </section>
     );

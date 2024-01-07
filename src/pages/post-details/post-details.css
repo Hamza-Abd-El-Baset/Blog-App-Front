@@ -89,9 +89,9 @@
     margin: 15px 0;
     font-size: 27px;
     display: flex;
-    align-items:first center;
+    align-items:center;
     justify-content: space-between;
-    color: var(--blue-color)
+    color: var(--blue-color);
 }
 
 .post-details-icon-wrapper i {

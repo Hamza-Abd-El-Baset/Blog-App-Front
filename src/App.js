@@ -10,7 +10,7 @@ import Footer from "./components/footer/Footer";
 import PostDetails from "./pages/post-details/PostDetails";
 import { ToastContainer } from "react-toastify";
 import Category from "./pages/cateogry/Cateogry";
-import Profile from "./components/sidebar/profile/Profile";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   return (
