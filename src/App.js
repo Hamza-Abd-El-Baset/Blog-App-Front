@@ -13,6 +13,8 @@ import Category from "./pages/cateogry/Cateogry";
 import Profile from "./pages/profile/Profile";
 import UsersTable from "./pages/admin/UsersTable";
 import PostsTable from "./pages/admin/PostsTable";
+import CategoriesTable from "./pages/admin/CategoriesTable";
+import CommentsTable from "./pages/admin/CommentsTable";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route index element={<AdminDashboard />}/>
           <Route path="users-table" element={<UsersTable />}/>
           <Route path="posts-table" element={<PostsTable />}/>
+          <Route path="categories-table" element={<CategoriesTable />}/>
+          <Route path="comments-table" element={<CommentsTable />}/>
         </Route>
       </Routes>
       <Footer/>
