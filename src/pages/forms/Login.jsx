@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
+    import { Link } from "react-router-dom";
 import "./form.css"
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import { useDispatch } from 'react-redux'
+import { loginUser } from "../../redux/apiCalls/authApiCall";
 const Login = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const dipstach = useDispatch()
 
     const formSubmitHandler = (e) => {
         e.preventDefault()
@@ -14,7 +17,7 @@ const Login = () => {
         if(email.trim() === "") return toast.error("Email is required")
         if(password.trim() === "") return toast.error("Password is required")
 
-        console.log({ email, password})
+        dipstach(loginUser( { email, password }))
     }
 
     return ( 
