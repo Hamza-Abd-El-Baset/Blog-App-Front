@@ -1,9 +1,11 @@
 import {Link} from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Navbar = ({showNavbar, setShowNavbar}) => {
+    const {user} = useSelector(state => state.auth)
 
     return(
-        <div style={{clipPath: showNavbar && "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }} className="navbar">
+        <nav style={{clipPath: showNavbar && "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }} className="navbar">
 
             <ul className="nav-links">
 
@@ -15,17 +17,25 @@ const Navbar = ({showNavbar, setShowNavbar}) => {
                     <i className="bi bi-stickies"></i> Posts
                 </Link>
 
-                <Link to="posts/create" onClick={() => setShowNavbar(false)} className="nav-link">
-                    <i className="bi bi-journal-plus"></i> Create
-                </Link>
+                {
+                    user && (
+                        <Link to="posts/create" onClick={() => setShowNavbar(false)} className="nav-link">
+                            <i className="bi bi-journal-plus"></i> Create
+                        </Link>
+                    )
+                }
 
-                <Link to="admin-dashboard" onClick={() => setShowNavbar(false)} className="nav-link">
-                    <i className="bi bi-person-check"></i> Admin Dashboard
-                </Link>
-
+                {
+                    user?.isAdmin && (
+                        <Link to="admin-dashboard" onClick={() => setShowNavbar(false)} className="nav-link">
+                            <i className="bi bi-person-check"></i> Admin Dashboard
+                        </Link>
+                    )
+                }
+                
             </ul>
 
-        </div>
+        </nav>
     )
 }
 
