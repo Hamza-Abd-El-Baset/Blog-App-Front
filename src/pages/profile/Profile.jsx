@@ -1,6 +1,6 @@
 import PostList from "../../components/posts/PostList";
 import {posts} from "../../dummyData"
-import { getUserProfile } from "../../redux/apiCalls/profileApiCall";
+import { getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
 import UpdateProfileModel from "./UpdateProfileModel";
 import "./profile.css"
 import { useEffect, useState } from "react";
@@ -26,7 +26,10 @@ const Profile = () => {
         e.preventDefault()
         if(!file) return toast.warning("Please select an image to upload")
 
-        console.log("Image uploaded")
+        const formData = new FormData()
+        formData.append("image", file)
+
+        dispatch(uploadProfilePhoto(formData))
     }
 
     const deleteAccountHandler = () => {
