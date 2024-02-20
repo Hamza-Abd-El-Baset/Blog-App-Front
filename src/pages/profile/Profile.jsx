@@ -98,7 +98,9 @@ const Profile = () => {
             <button onClick={deleteAccountHandler} className="delete-account-btn">
                 Delete Your Account
             </button>
-            {openUpdateProfileModel && <UpdateProfileModel setOpenUpdateProfileModel={setOpenUpdateProfileModel}/>}
+            {openUpdateProfileModel && (
+                <UpdateProfileModel profile={profile} setOpenUpdateProfileModel={setOpenUpdateProfileModel}/>
+            )}
         </section>
     );
 }

@@ -1,16 +1,15 @@
 import { useState } from "react";
 import "./update-profile.css"
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux"
+import { updateProfile } from "../../redux/apiCalls/profileApiCall";
 
-const user = {
-    username: "Hamza Abd-El-Baset",
-    bio: "Hello! My name is Hamza, I am a web developer"
-}
 
-const UpdateProfileModel = ({setOpenUpdateProfileModel}) => {
-    
-    const [username, setUsername] = useState(user.username)
-    const [bio, setBio] = useState(user.bio)
+const UpdateProfileModel = ({ setOpenUpdateProfileModel, profile }) => {
+    const dispatch = useDispatch()
+
+    const [username, setUsername] = useState(profile.username)
+    const [bio, setBio] = useState(profile.bio)
     const [password, setPassword] = useState("")
 
     const formSubmitHandler = (e) => {
@@ -24,7 +23,8 @@ const UpdateProfileModel = ({setOpenUpdateProfileModel}) => {
             updatedUser.password = password
         }
 
-        console.log(updatedUser)
+        dispatch(updateProfile(profile?._id, updatedUser))
+        setOpenUpdateProfileModel(false)
     }
 
     return (
