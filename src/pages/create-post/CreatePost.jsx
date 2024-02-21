@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./create-post.css"
 import { toast} from "react-toastify";
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom";
+import { createPost } from "../../redux/apiCalls/postApiCall";
+import { RotatingLines} from "react-loader-spinner"
 
 const CreatePost = () => {
+    const dispatch = useDispatch()
+    const { loading, isPostCreated } = useSelector(state => state.post)
 
     const [postData, setPostData] = useState({
         title: "",
@@ -25,12 +31,16 @@ const CreatePost = () => {
         formData.append("title", title )
         formData.append("category", category )
         formData.append("description", description )
-        /**
-         * @todo send data to backend
-         */
-        console.log(formData)
         
+        dispatch(createPost(formData))
     }
+
+    const navigate = useNavigate()
+    useEffect(() => {
+        if(isPostCreated) {
+            navigate("/")
+        }
+    }, [isPostCreated, navigate])
 
     return ( 
         <section className="create-post">
@@ -71,7 +81,21 @@ const CreatePost = () => {
                     onChange={(e) =>  setPostData({...postData, file: e.target.files[0]})}
                 />
                 <button type="submit" className="create-post-btn">
-                    Create
+                    {
+                        loading ? (
+                            <RotatingLines
+                                visible={true}
+                                height="40"
+                                width="40"
+                                color="white"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                ariaLabel="rotating-lines-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                            />
+                        ) : "Create"
+                    }
                 </button>
             </form>
         </section>
