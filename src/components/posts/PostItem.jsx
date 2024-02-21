@@ -30,7 +30,7 @@ const PostItem = ({post}) => {
                 <p className="post-item-description">
                     {post?.description}
                 </p>
-                <Link className="post-item-link" to={`/posts/details/${post._id}`}>
+                <Link className="post-item-link" to={`/posts/${post._id}`}>
                     Read More ...
                 </Link>
             </div>
