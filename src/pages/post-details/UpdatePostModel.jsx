@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState } from "react";   
 import "./update-post.css"
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updatePost } from "../../redux/apiCalls/postApiCall";
 
 const UpdatePostModel = ({setOpenUpdatePostModel, post}) => {
-    
+    const dispatch = useDispatch()
+
     const [title, setTitle] = useState(post.title)
     const [description, setDescription] = useState(post.description)
     const [category, setCategory] = useState(post.category)
@@ -15,7 +18,8 @@ const UpdatePostModel = ({setOpenUpdatePostModel, post}) => {
         if(category.trim() === "") return toast.error("Post category is required")
         if(description.trim() === "") return toast.error("Post description is required")
 
-        console.log({title, description, category})
+        dispatch(updatePost(post?._id, {title, description, category}))
+        setOpenUpdatePostModel(false)
     }
 
     return (
