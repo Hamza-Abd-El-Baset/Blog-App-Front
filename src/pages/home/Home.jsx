@@ -1,6 +1,5 @@
 import PostList from "../../components/posts/PostList";
 import "./home.css"
-import {categories} from '../../dummyData'
 import Sidebar from "../../components/sidebar/Sidebar";
 import {Link} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -25,7 +24,7 @@ const Home = () => {
             <div className="home-latest-posts">Latest Posts</div>
             <div className="home-container">
                 <PostList posts={posts} />
-                <Sidebar categories={categories} />
+                <Sidebar />
             </div>
             <div className="home-see-all-posts">
                 <Link to="/posts" className="link">
