@@ -30,7 +30,7 @@ const Register = () => {
         swal({
             title: registerMessage,
             icon: "success"
-        }).then( isOk => {
+        }).then(isOk => {
             if(isOk) {
                 navigate("/login")
             }

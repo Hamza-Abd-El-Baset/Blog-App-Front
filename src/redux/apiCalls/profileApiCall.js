@@ -47,12 +47,15 @@ export function uploadProfilePhoto(newPhoto) {
 export function updateProfile(userId, profile) {
     return async (dispatch, getState) => {
         try {
-            const {data} = await request
-            .put(`/api/users/profile/${userId}`, profile, {
-                headers: {
-                    "Authorization": "Bearer " + getState().auth.user.token,
+            const {data} = await request.put(
+                `/api/users/profile/${userId}`,
+                profile,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + getState().auth.user.token,
+                    }
                 }
-            })
+            )
 
             dispatch(profileActions.updateProfile(data))
             dispatch(authActions.setUsername(data.username))
@@ -64,6 +67,30 @@ export function updateProfile(userId, profile) {
 
         } catch (error) {
             toast.error(error.response.data.message)
+        }
+    }
+}
+
+//Delete Profile (Account)
+export function deleteProfile(userId) {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(profileActions.setLoading())
+            const {data} = await request.delete(
+                `/api/users/profile/${userId}`,
+                {
+                    headers: {
+                        "Authorization": "Bearer " + getState().auth.user.token,
+                    }
+                }
+            )
+
+            dispatch(profileActions.setIsProfileDeleted())
+            toast.success(data?.message)
+            setTimeout(() => dispatch(profileActions.clearIsProfileDeleted()), 2000)
+        } catch (error) {
+            toast.error(error.response.data.message)
+            dispatch(profileActions.clearLoading())
         }
     }
 }

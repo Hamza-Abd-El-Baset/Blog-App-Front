@@ -1,17 +1,18 @@
-import PostList from "../../components/posts/PostList";
-import { getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
+import { deleteProfile, getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
 import UpdateProfileModel from "./UpdateProfileModel";
 import "./profile.css"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import PostItem from "../../components/posts/PostItem";
+import { Oval } from "react-loader-spinner"
+import { logoutUser } from "../../redux/apiCalls/authApiCall"
 
 const Profile = () => {
     const dispatch = useDispatch()
-    const { profile } = useSelector(state => state.profile)
+    const { profile, loading, isProfileDeleted } = useSelector(state => state.profile)
     const { user } = useSelector(state => state.auth)
     
     const [file, setFile] = useState(null)
@@ -22,6 +23,13 @@ const Profile = () => {
         dispatch(getUserProfile(id))
         window.scrollTo(0, 0)
     }, [id])
+
+    const navigate = useNavigate()
+    useEffect(() => {
+        if(isProfileDeleted) {
+            navigate("/")
+        }
+    }, [navigate, isProfileDeleted])
 
     const formSubmitHandler = (e) => {
         e.preventDefault()
@@ -41,15 +49,28 @@ const Profile = () => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Account has been deleted!", {
-                icon: "success",
-              });
-            } else {
-              swal("Your account is safe!");
+          .then((isOk) => {
+            if (isOk) {
+                dispatch(deleteProfile(user?._id))
+                dispatch(logoutUser())
             }
           });
+    }
+
+    if(loading) {
+        return(
+            <div className="profile-loader">
+                <Oval
+                visible={true}
+                height="120"
+                width="120"
+                color="#000"
+                ariaLabel="oval-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                />  
+            </div>   
+        )
     }
 
     return (
