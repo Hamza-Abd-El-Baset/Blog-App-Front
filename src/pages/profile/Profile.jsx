@@ -1,5 +1,4 @@
 import PostList from "../../components/posts/PostList";
-import {posts} from "../../dummyData"
 import { getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
 import UpdateProfileModel from "./UpdateProfileModel";
 import "./profile.css"
@@ -8,10 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify";
 import swal from "sweetalert";
+import PostItem from "../../components/posts/PostItem";
 
 const Profile = () => {
     const dispatch = useDispatch()
     const { profile } = useSelector(state => state.profile)
+    const { user } = useSelector(state => state.auth)
     
     const [file, setFile] = useState(null)
     const [openUpdateProfileModel, setOpenUpdateProfileModel] = useState(false)
@@ -59,24 +60,28 @@ const Profile = () => {
                         src={file ? URL.createObjectURL(file) : profile?.profilePhoto.url}
                         alt="" className="profile-image"
                     />
-                    <form onSubmit={formSubmitHandler}>
-                        <abbr title="choose profile photo">
-                            <label
-                                htmlFor="file"
-                                className="bi bi-camera-fill upload-profile-photo-icon">
-                            </label>
-                        </abbr>
-                        <input
-                            style={{display: 'none'}}
-                            type="file"
-                            name="file"
-                            id="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                        <button type="submit" className="upload-profile-photo-btn">
-                            upload
-                        </button>
-                    </form>
+                    {
+                        user?._id === profile?._id && (
+                            <form onSubmit={formSubmitHandler}>
+                                <abbr title="choose profile photo">
+                                    <label
+                                        htmlFor="file"
+                                        className="bi bi-camera-fill upload-profile-photo-icon">
+                                    </label>
+                                </abbr>
+                                <input
+                                    style={{display: 'none'}}
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                />
+                                <button type="submit" className="upload-profile-photo-btn">
+                                    upload
+                                </button>
+                            </form>
+                        )
+                    }
                 </div>
                 <h1 className="profile-username">{profile?.username}</h1>
                 <p className="profile-bio">
@@ -86,18 +91,35 @@ const Profile = () => {
                     <strong>Date Joined: </strong>
                     <span>{new Date(profile?.createdAt).toDateString()}</span>
                 </div>
-                <button onClick={() => setOpenUpdateProfileModel(true)} className="profile-update-btn">
-                    <i className="bi bi-file-person-fill"></i>
-                    Update Profile
-                </button>
+                {
+                    user?._id === profile?._id && (
+                        <button onClick={() => setOpenUpdateProfileModel(true)} className="profile-update-btn">
+                            <i className="bi bi-file-person-fill"></i>
+                            Update Profile
+                        </button>
+                    )
+                }
             </div>
             <div className="profile-posts-list">
                 <h2 className="profile-posts-list-title">Posts</h2>
-                <PostList posts={posts}/>
+                {
+                    profile?.posts.map(post => 
+                        <PostItem
+                         key={post._id} 
+                         post={post}
+                         username={profile?.username}
+                         userId={profile?._id}
+                        />
+                    )
+                }
             </div>
-            <button onClick={deleteAccountHandler} className="delete-account-btn">
-                Delete Your Account
-            </button>
+            {
+                user?._id === profile?._id && (
+                    <button onClick={deleteAccountHandler} className="delete-account-btn">
+                        Delete Your Account
+                    </button>
+                )
+            }
             {openUpdateProfileModel && (
                 <UpdateProfileModel profile={profile} setOpenUpdateProfileModel={setOpenUpdateProfileModel}/>
             )}
