@@ -3,15 +3,23 @@ import "./comment-list.css"
 import UpdateCommentModel from "./UpdateCommentModel";
 import { useState } from "react";
 import Moment from "react-moment"
-import { UseDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteComment } from "../../redux/apiCalls/commentApiCall";
 
 
 const CommentList = ({ comments }) => {
+    const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
 
     const [openUpdateCommentModel, setOpenUpdateCommentModel] = useState(false)
+    const [commentForUpdate, setCommentForUpdate] = useState(null)
 
-    const deleteCommentHandler = () => {
+    const updateCommentHandler = (comment) => {
+        setCommentForUpdate(comment)
+        setOpenUpdateCommentModel(true)
+    }
+
+    const deleteCommentHandler = (commentId) => {
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this comment!",
@@ -19,13 +27,9 @@ const CommentList = ({ comments }) => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Comment has been deleted!", {
-                icon: "success",
-              });
-            } else {
-              swal("Your comment is safe!");
+          .then((isOk) => {
+            if (isOk) {
+              dispatch(deleteComment(commentId))
             }
           });
     }
@@ -53,15 +57,17 @@ const CommentList = ({ comments }) => {
                     {
                         user?._id === comment.user && (
                             <div className="comment-item-icon-wrapper">
-                                <i className="bi bi-pencil-square" onClick={() => setOpenUpdateCommentModel(true)}></i>
-                                <i className="bi bi-trash-fill" onClick={deleteCommentHandler}></i>
+                                <i className="bi bi-pencil-square" onClick={() => updateCommentHandler(comment)}></i>
+                                <i className="bi bi-trash-fill" onClick={() => deleteCommentHandler(comment?._id)}></i>
                             </div>
                         )
                     }
                </div> 
                 )
             )}
-            {openUpdateCommentModel && <UpdateCommentModel setOpenUpdateCommentModel={setOpenUpdateCommentModel} comment={{_id:1, text: "Hello! This is amazing"}}/>}
+            {openUpdateCommentModel && (
+                <UpdateCommentModel commentForUpdate={commentForUpdate} setOpenUpdateCommentModel={setOpenUpdateCommentModel} />
+            )}
         </div>
     );
 }

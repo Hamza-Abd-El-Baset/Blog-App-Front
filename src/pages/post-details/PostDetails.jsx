@@ -117,7 +117,13 @@ const PostDetails = () => {
                     )
                 }
             </div>
-            <AddComment/>
+            {
+                user ? <AddComment postId={post?._id}/> : 
+                <p className="post-details-info-write">
+                    To write a comment, you should login first 
+                </p>
+            }
+            
             <CommentList comments={post?.comments}/>
             {openUpdatePostModel && <UpdatePostModel setOpenUpdatePostModel={setOpenUpdatePostModel} post={post}/>}
             

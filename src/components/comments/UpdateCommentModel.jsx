@@ -1,17 +1,22 @@
 import { useState } from "react";
 import "./update-comment.css"
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updateComment } from "../../redux/apiCalls/commentApiCall";
 
-const UpdateCommentModel = ({setOpenUpdateCommentModel, comment}) => {
+const UpdateCommentModel = ({setOpenUpdateCommentModel, commentForUpdate}) => {
     
-    const [text, setText] = useState(comment.text)
+    const dispatch = useDispatch()
+
+    const [text, setText] = useState(commentForUpdate?.text)
 
     const formSubmitHandler = (e) => {
         e.preventDefault()
         
         if(text.trim() === "") return toast.error("Please write something")
 
-        console.log({text})
+        dispatch(updateComment(commentForUpdate?._id, {text}))
+        setOpenUpdateCommentModel(false)
     }
 
     return (
