@@ -31,6 +31,7 @@ export function registerUser(user) {
         try {
             const {data} = await request.post('/api/auth/register', user)
             dispatch(authActions.register(data.message))
+            setTimeout(() => dispatch(authActions.register(null)), 2000)
         } catch (error) {
             toast.error(error.response.data.message)
         }
