@@ -124,7 +124,7 @@ const Profile = () => {
             <div className="profile-posts-list">
                 <h2 className="profile-posts-list-title">Posts</h2>
                 {
-                    profile?.posts.map(post => 
+                    profile?.posts?.map(post => 
                         <PostItem
                          key={post._id} 
                          post={post}
