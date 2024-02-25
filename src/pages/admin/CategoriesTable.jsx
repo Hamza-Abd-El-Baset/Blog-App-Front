@@ -1,11 +1,19 @@
 import AdminSidebar from "./AdminSidebar"
 import "./admin-table.css"
 import swal from "sweetalert";
-import { categories } from "../../dummyData";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { deleteCategory, fetchCategories } from "../../redux/apiCalls/categoryApiCall";
 
 const CategoriesTable = () => {
+    const dispatch = useDispatch()
+    const {categories} = useSelector(state => state.category)
 
-    const deleteCategoryHandler = () => {
+    useEffect(() => {
+        dispatch(fetchCategories())
+    }, [])
+
+    const deleteCategoryHandler = (categoryId) => {
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this category!",
@@ -13,13 +21,9 @@ const CategoriesTable = () => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Category has been deleted!", {
-                icon: "success",
-              });
-            } else {
-              swal("Category is safe!");
+          .then((isOk) => {
+            if (isOk) {
+              dispatch(deleteCategory(categoryId))
             }
           });
     }
@@ -39,14 +43,14 @@ const CategoriesTable = () => {
                     </thead>
                     <tbody>
                         {categories.map((item, index) => (
-                            <tr key={index + 1}>
+                            <tr key={item._id}>
                                 <td>{index + 1}</td>
                                 <td>
                                     <b>{item.title}</b>
                                 </td>
                                 <td>
                                     <div className="table-button-group">
-                                        <button onClick={deleteCategoryHandler}>
+                                        <button onClick={() => deleteCategoryHandler(item._id)}>
                                             Delete Category
                                         </button>
                                     </div>
