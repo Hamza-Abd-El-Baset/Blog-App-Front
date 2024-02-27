@@ -108,7 +108,7 @@ export function getUsersCount() {
                 }
             )
 
-            dispatch(profileActions.setUserCount(data.usersCount))
+            dispatch(profileActions.setUserCount(data))
         } catch (error) {
             toast.error(error.response.data.message)
         }

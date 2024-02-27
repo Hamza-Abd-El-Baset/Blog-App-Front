@@ -11,7 +11,7 @@ const store = configureStore({
         profile: profileReducer,
         post: postReducer,
         category: categoryReducer,
-        Comment: commentReducer,
+        comment: commentReducer,
     }
 })
 

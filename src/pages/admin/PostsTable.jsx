@@ -2,11 +2,19 @@ import { Link } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar"
 import "./admin-table.css"
 import swal from "sweetalert";
-import { posts } from "../../dummyData";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { deletePost, getAllPosts } from "../../redux/apiCalls/postApiCall";
 
 const PostsTable = () => {
+    const dispatch = useDispatch()
+    const { posts } = useSelector(state => state.post)
 
-    const deletePostHandler = () => {
+    useEffect(() => {
+        dispatch(getAllPosts())
+    }, [])
+
+    const deletePostHandler = (postId) => {
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this post!",
@@ -14,13 +22,9 @@ const PostsTable = () => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Post has been deleted!", {
-                icon: "success",
-              });
-            } else {
-              swal("Post is safe!");
+          .then((isOk) => {
+            if (isOk) {
+              dispatch(deletePost(postId))
             }
           });
     }
@@ -41,16 +45,18 @@ const PostsTable = () => {
                     </thead>
                     <tbody>
                         {posts.map((item, index) => (
-                            <tr key={index + 1}>
+                            <tr key={item._id}>
                                 <td>{index + 1}</td>
                                 <td>
                                     <div className="table-image">
                                         <img
-                                            src="/images/user-avatar.png"
+                                            src={item.user.profilePhoto?.url}
                                             alt=""
                                             className="table-user-image"    
                                         />
-                                        <span className="table-username">{item.user.username}</span>
+                                        <span className="table-username">
+                                            {item.user.username}
+                                        </span>
                                     </div>
                                 </td>
                                 <td>{item.title}</td>
@@ -61,7 +67,7 @@ const PostsTable = () => {
                                                 View Post
                                             </Link>
                                         </button>
-                                        <button onClick={deletePostHandler}>Delete Post</button>
+                                        <button onClick={() => deletePostHandler(item._id)}>Delete Post</button>
                                     </div>
                                 </td>
                             </tr>    
