@@ -24,7 +24,6 @@ export function logoutUser(user) {
 }
 }
 
-
 //Register User
 export function registerUser(user) {
     return async (dispatch) => {
@@ -32,6 +31,18 @@ export function registerUser(user) {
             const {data} = await request.post('/api/auth/register', user)
             dispatch(authActions.register(data.message))
             setTimeout(() => dispatch(authActions.register(null)), 2000)
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+}
+
+//Verify Email
+export function verifyEmail(userId, token) {
+    return async (dispatch) => {
+        try {
+            await request.get(`/api/auth/${userId}/verify/${token}`)
+            dispatch(authActions.setIsEmailVerified())
         } catch (error) {
             toast.error(error.response.data.message)
         }
