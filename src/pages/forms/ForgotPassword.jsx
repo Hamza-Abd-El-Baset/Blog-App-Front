@@ -1,8 +1,11 @@
 import "./form.css"
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux"
+import { forgotPassword } from "../../redux/apiCalls/passwordApiCall";
 
 const ForgotPassword = () => {
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState("")
 
@@ -11,7 +14,7 @@ const ForgotPassword = () => {
 
         if(email.trim() === "") return toast.error("Email is required")
 
-        console.log({ email})
+        dispatch(forgotPassword(email))
     }
 
     return ( 
