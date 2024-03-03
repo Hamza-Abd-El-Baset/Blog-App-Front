@@ -29,7 +29,7 @@ const ResetPassword = () => {
         <section className="form-container">
             {
                 isError ? (
-                    <h1 style={{ color: 'red', fontSize: '40px' }}>Invalid Link</h1>
+                    <h1 style={{ color: 'var(--red-color)', fontSize: '40px' }}>Invalid Link</h1>
                 ) : (
                     <>
                         <h1 className="form-title">Reset Password</h1>
