@@ -42,7 +42,7 @@ const Login = () => {
                         Password
                     </label>
                     <input
-                        type="text"
+                        type="password"
                         className="form-input"
                         id="password"
                         placeholder="Enter your password"

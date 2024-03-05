@@ -1,15 +1,22 @@
 import swal from "sweetalert";
 import "./comment-list.css"
 import UpdateCommentModel from "./UpdateCommentModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Moment from "react-moment"
 import { useDispatch, useSelector } from "react-redux";
 import { deleteComment } from "../../redux/apiCalls/commentApiCall";
+import isTokenExpired from "../../utils/isTokenExpired";
 
 
 const CommentList = ({ comments }) => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
+
+    const [isTokenValid, setIsTokenValid] = useState(false)
+
+    useEffect(() => {
+        setIsTokenValid(!isTokenExpired(user?.token))
+    }, [user])
 
     const [openUpdateCommentModel, setOpenUpdateCommentModel] = useState(false)
     const [commentForUpdate, setCommentForUpdate] = useState(null)
@@ -55,7 +62,7 @@ const CommentList = ({ comments }) => {
                         {comment.text}
                     </p>
                     {
-                        user?._id === comment.user && (
+                        (user?._id === comment.user && isTokenValid) && (
                             <div className="comment-item-icon-wrapper">
                                 <i className="bi bi-pencil-square" onClick={() => updateCommentHandler(comment)}></i>
                                 <i className="bi bi-trash-fill" onClick={() => deleteCommentHandler(comment?._id)}></i>

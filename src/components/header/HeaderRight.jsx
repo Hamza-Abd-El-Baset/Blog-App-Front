@@ -1,7 +1,9 @@
 import {Link} from "react-router-dom"
 import {useSelector, useDispatch} from "react-redux"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { logoutUser } from "../../redux/apiCalls/authApiCall"
+import isTokenExpired from "../../utils/isTokenExpired"
+
 const HeaderRight = () => {
 
     const dispatch = useDispatch()
@@ -9,6 +11,11 @@ const HeaderRight = () => {
     const {user} = useSelector(state => state.auth)
 
     const [dropdown, setDropdown] = useState(false)
+    const [isTokenValid, setIsTokenValid] = useState(false)
+
+    useEffect(() => {
+        setIsTokenValid(!isTokenExpired(user?.token))
+    }, [user])
 
     //Logout Handler
     const logoutHandler = () => {
@@ -18,7 +25,7 @@ const HeaderRight = () => {
 
     return(
         <div className="header-right">
-            {user ? (
+            {isTokenValid ? (
                 <>
                     <div className="header-right-user-info">
                         <span
