@@ -1,16 +1,8 @@
 import {Link} from "react-router-dom"
 import { useSelector } from "react-redux"
-import isTokenExpired from "../../utils/isTokenExpired"
-import { useEffect, useState } from "react"
 
 const Navbar = ({showNavbar, setShowNavbar}) => {
     const {user} = useSelector(state => state.auth)
-
-    const [isTokenValid, setIsTokenValid] = useState(false)
-
-    useEffect(() => {
-        setIsTokenValid(!isTokenExpired(user?.token))
-    }, [user])
 
     return(
         <nav style={{clipPath: showNavbar && "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }} className="navbar">
@@ -26,7 +18,7 @@ const Navbar = ({showNavbar, setShowNavbar}) => {
                 </Link>
 
                 {
-                    isTokenValid && (
+                    user && (
                         <Link to="posts/create" onClick={() => setShowNavbar(false)} className="nav-link">
                             <i className="bi bi-journal-plus"></i> Create
                         </Link>
@@ -34,7 +26,7 @@ const Navbar = ({showNavbar, setShowNavbar}) => {
                 }
 
                 {
-                    (isTokenValid && user?.isAdmin) && (
+                    user?.isAdmin && (
                         <Link to="admin-dashboard" onClick={() => setShowNavbar(false)} className="nav-link">
                             <i className="bi bi-person-check"></i> Admin Dashboard
                         </Link>

@@ -11,10 +11,11 @@ const HeaderRight = () => {
     const {user} = useSelector(state => state.auth)
 
     const [dropdown, setDropdown] = useState(false)
-    const [isTokenValid, setIsTokenValid] = useState(false)
 
     useEffect(() => {
-        setIsTokenValid(!isTokenExpired(user?.token))
+        if(isTokenExpired(user?.token)) {
+            localStorage.removeItem("userInfo")
+        }
     }, [user])
 
     //Logout Handler
@@ -25,7 +26,7 @@ const HeaderRight = () => {
 
     return(
         <div className="header-right">
-            {isTokenValid ? (
+            {user ? (
                 <>
                     <div className="header-right-user-info">
                         <span

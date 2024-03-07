@@ -9,18 +9,11 @@ import swal from "sweetalert";
 import PostItem from "../../components/posts/PostItem";
 import { Oval } from "react-loader-spinner"
 import { logoutUser } from "../../redux/apiCalls/authApiCall"
-import isTokenExpired from "../../utils/isTokenExpired";
 
 const Profile = () => {
     const dispatch = useDispatch()
     const { profile, loading, isProfileDeleted } = useSelector(state => state.profile)
     const { user } = useSelector(state => state.auth)
-
-    const [isTokenValid, setIsTokenValid] = useState(false)
-
-    useEffect(() => {
-        setIsTokenValid(!isTokenExpired(user?.token))
-    }, [user])
     
     const [file, setFile] = useState(null)
     const [openUpdateProfileModel, setOpenUpdateProfileModel] = useState(false)
@@ -89,7 +82,7 @@ const Profile = () => {
                         alt="" className="profile-image"
                     />
                     {
-                        (user?._id === profile?._id && isTokenValid) && (
+                        user?._id === profile?._id && (
                             <form onSubmit={formSubmitHandler}>
                                 <abbr title="choose profile photo">
                                     <label
@@ -105,7 +98,7 @@ const Profile = () => {
                                     onChange={(e) => setFile(e.target.files[0])}
                                 />
                                 <button type="submit" className="upload-profile-photo-btn">
-                                    upload
+                                    Upload
                                 </button>
                             </form>
                         )
@@ -120,7 +113,7 @@ const Profile = () => {
                     <span>{new Date(profile?.createdAt).toDateString()}</span>
                 </div>
                 {
-                    (user?._id === profile?._id && isTokenValid) && (
+                    user?._id === profile?._id && (
                         <button onClick={() => setOpenUpdateProfileModel(true)} className="profile-update-btn">
                             <i className="bi bi-file-person-fill"></i>
                             Update Profile
@@ -142,7 +135,7 @@ const Profile = () => {
                 }
             </div>
             {
-                (user?._id === profile?._id && isTokenValid) && (
+                user?._id === profile?._id && (
                     <button onClick={deleteAccountHandler} className="delete-account-btn">
                         Delete Your Account
                     </button>

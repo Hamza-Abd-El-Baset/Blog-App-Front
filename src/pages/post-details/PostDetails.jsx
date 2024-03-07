@@ -8,22 +8,14 @@ import swal from "sweetalert";
 import UpdatePostModel from "./UpdatePostModel";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, fetchSinglePost, toggleLikePost, updatePostImage } from "../../redux/apiCalls/postApiCall";
-import isTokenExpired from "../../utils/isTokenExpired";
 
 const PostDetails = () => {
     const dispatch = useDispatch()
     const {post} = useSelector(state => state.post)
     const {user} = useSelector(state => state.auth)
     
-    const [isTokenValid, setIsTokenValid] = useState(false)
-
-    useEffect(() => {
-        setIsTokenValid(!isTokenExpired(user?.token))
-    }, [user])
-
     const {id} = useParams()
 
-    
     const [file, setFile] = useState(null)
     const [openUpdatePostModel, setOpenUpdatePostModel] = useState(false)
 
@@ -65,7 +57,7 @@ const PostDetails = () => {
             <div className="post-details-image-wrapper">
                 <img src={file ? URL.createObjectURL(file) : post?.image.url} alt="" className="post-details-image" />
                 {
-                    (user?._id === post?.user?._id && isTokenValid) && (
+                    user?._id === post?.user?._id && (
                         <form
                         onSubmit={updateImageSubmitHandler}
                         className="update-post-image-form"
@@ -102,7 +94,7 @@ const PostDetails = () => {
             <div className="post-details-icon-wrapper">
                 <div>
                     {
-                        isTokenValid && (
+                        user && (
                             <i
                             onClick={() => dispatch(toggleLikePost(post?._id))}
                             className={
@@ -116,7 +108,7 @@ const PostDetails = () => {
                     <small>{post?.likes.length}</small>
                 </div>
                 { 
-                    (user?._id === post?.user?._id && isTokenValid) && (
+                    user?._id === post?.user?._id && (
                         <div>
                             <i className="bi bi-pencil-square" onClick={() => setOpenUpdatePostModel(true)}></i>
                             <i className="bi bi-trash-fill" onClick={deletePostHandler}></i>
