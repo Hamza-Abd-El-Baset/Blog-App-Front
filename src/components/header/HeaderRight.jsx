@@ -16,7 +16,7 @@ const HeaderRight = () => {
         if(isTokenExpired(user?.token)) {
             localStorage.removeItem("userInfo")
         }
-    }, [user])
+    }, [])
 
     //Logout Handler
     const logoutHandler = () => {
