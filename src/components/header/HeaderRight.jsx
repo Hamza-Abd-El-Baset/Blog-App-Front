@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import {useSelector, useDispatch} from "react-redux"
 import { useState, useEffect } from "react"
 import { logoutUser } from "../../redux/apiCalls/authApiCall"
@@ -12,11 +12,14 @@ const HeaderRight = () => {
 
     const [dropdown, setDropdown] = useState(false)
 
+    const navigate = useNavigate()
+
     useEffect(() => {
+        setDropdown(false)
         if(isTokenExpired(user?.token)) {
             localStorage.removeItem("userInfo")
         }
-    }, [])
+    }, [navigate])
 
     //Logout Handler
     const logoutHandler = () => {
